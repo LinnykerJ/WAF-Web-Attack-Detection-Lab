@@ -88,15 +88,23 @@ Ao realizar o teste de requisição maliciosa utilizando o utilitário `curl`, o
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?hack=true"
 ```
-![Regra Customizada Dedicada](./images/06-regra-customizada.jpeg)
+![Regra Customizada Dedicada](./images/04.5-regra-customizada.jpeg)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden** disparada por política interna.*
 
 ### C. Detecção de SQL Injection (SQLi)
-Simulação de bypass de autenticação injetando operadores lógicos no parâmetro de login. O tráfego é mitigado na borda através do motor global:
+Simulação de bypass de autenticação injetando operadores lógicos no parâmetro de login. O tráfego é mitigado na borda através do motor global da OWASP:
 ```bash
 curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutillidae/index.php"
 ```
 ![Mitigação SQLi](./images/04-ataque-sqli-bloqueado.jpeg)
+*Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
+
+### D. Detecção de Cross-Site Scripting (XSS)
+Simulação de injeção de script malicioso voltado ao cliente final utilizando tags estruturais (`<script>`). O mecanismo de inspeção profunda do ModSecurity identifica a tentativa de defacement/roubo de sessão e bloqueia a requisição de imediato:
+```bash
+curl -I "http://localhost:8080/mutillidae/index.php?page=<script>alert(1)</script>"
+```
+![Mitigação XSS](./images/04.7-ataque-xss-bloqueado.jpeg)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ---
@@ -120,6 +128,7 @@ sudo podman logs --tail 20 meu-waf
 | **LFI / Directory Traversal** | Assinatura Global (OWASP CRS) | Interceptar e bloquear requisição | `HTTP/1.1 403 Forbidden` | 🛡️ Mitigado |
 | **Regra Customizada (`hack=true`)** | Regra Personalizada (`id:999999`) | Aplicar política específica e barrar | `HTTP/1.1 403 Forbidden` | 🛡️ Mitigado |
 | **SQL Injection (SQLi)** | Assinatura Global (OWASP CRS) | Interceptar e bloquear requisição | `HTTP/1.1 403 Forbidden` | 🛡️ Mitigado |
+| **Cross-Site Scripting (XSS)** | Assinatura Global (OWASP CRS) | Interceptar e mitigar script injetado | `HTTP/1.1 403 Forbidden` | 🛡️ Mitigado |
 
 ---
 
@@ -127,10 +136,10 @@ sudo podman logs --tail 20 meu-waf
 
 A execução deste laboratório prático permitiu analisar a aplicação de uma abordagem de Defesa em Profundidade (Defense-in-Depth) na proteção de aplicações web. Embora o desenvolvimento seguro seja fundamental para a redução de vulnerabilidades, a utilização de um Web Application Firewall (WAF) fornece uma camada adicional de proteção capaz de identificar e mitigar requisições que apresentam características associadas a ataques web.
 
-Durante os testes, foram avaliados cenários de Local File Inclusion (LFI/Directory Traversal), regras customizadas e SQL Injection (SQLi), observando-se o comportamento do WAF diante de requisições legítimas e maliciosas. Os eventos gerados pelo ModSecurity também foram analisados por meio dos logs, permitindo identificar as regras responsáveis pela detecção e pelo bloqueio das requisições.
+Durante os testes, foram avaliados cenários de Local File Inclusion (LFI/Directory Traversal), regras customizadas, SQL Injection (SQLi) e Cross-Site Scripting (XSS), observando-se o comportamento do WAF diante de requisições legítimas e maliciosas. Os eventos gerados pelo ModSecurity também foram analisados por meio dos logs, permitindo identificar as regras responsáveis pela detecção e pelo bloqueio das requisições.
 
 Com o desenvolvimento do laboratório, foi possível aplicar conceitos relacionados à segurança de aplicações web, OWASP, WAF, análise de requisições HTTP e monitoramento de eventos de segurança, consolidando conhecimentos teóricos por meio de uma implementação prática em ambiente controlado.
 
 ---
 
-> ⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia_de_um_unico_clique."*
+> ⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia de um único clique."*
