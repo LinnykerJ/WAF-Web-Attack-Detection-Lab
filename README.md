@@ -1,54 +1,59 @@
 # 🛡️ Web Application Firewall (WAF) Lab - ModSecurity & OWASP CRS
 
-Este projeto apresenta um laboratório prático de **Segurança Defensiva (Blue Team)**, focado na implementação, validação e monitoramento de um **Web Application Firewall (WAF)** para mitigar vulnerabilidades críticas descritas no **OWASP**.
-
-O ambiente utiliza o **Nginx com ModSecurity v3** integrado ao **OWASP Core Rule Set (CRS)**, atuando como um Proxy Reverso de segurança à frente de um servidor web vulnerável (OWASP BWA).
+Este repositório documenta a implementação de um **Web Application Firewall (WAF)** baseado em **Nginx** e **ModSecurity v3 (OWASP Core Rule Set)**, atuando como um Proxy Reverso defensivo para mitigar ataques do OWASP Top 10.
 
 ---
 
-## 🏗️ Arquitetura do Laboratório
+## 🚀 1. Inicialização da Infraestrutura
 
-O WAF foi implementado via contêiner e configurado para interceptar, inspecionar e filtrar todo o tráfego direcionado à aplicação web antes que as requisições cheguem ao servidor final.
+O ambiente foi orquestrado via contêiner para atuar na borda da aplicação. O console abaixo demonstra a execução limpa do deploy, finalizando com o código de sucesso (ID do contêiner ativo):
 
-![Subindo a Infraestrutura](./01-subindo-container-waf.jpg)
-*Figura 1: Orquestração e deploy do contêiner do WAF utilizando gerenciamento isolado.*
+```bash
+sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://10.0.2.3 -e PARANOIA=1 docker.io/owasp/modsecurity-crs:nginx
+```
+![Código de Sucesso e Deploy](./01-subindo-container-waf.png)
 
 ---
 
-## 🧪 Testes de Validação e Eficácia (Ataque vs Defesa)
+## 🌐 2. Validação de Tráfego Legítimo (Acesso Normal)
 
-### 1. Tráfego Legítimo (Acesso Normal)
-A requisição padrão ao ecossistema através do proxy reverso funciona perfeitamente, provando que o WAF opera de forma transparente para usuários comuns.
-![Acesso Legítimo](./02-acesso-via-waf-sucesso.jpeg)
+Antes dos testes de intrusão, validamos se o WAF permite o tráfego comum de usuários sem gerar falsos positivos. A requisição retorna um status padrão de sucesso (`200 OK`):
 
-### 2. Mitigação de Directory Traversal (LFI)
-Ao tentar injetar um payload para ler arquivos confidenciais do sistema operacional (`../../../../etc/passwd`), o WAF intercepta o ataque e corta a conexão imediatamente com um código de bloqueio.
+```bash
+curl -I "http://localhost:8080/mutillidae/index.php"
+```
+*(Aqui você pode colocar o print do navegador abrindo o painel ou o retorno 200 OK do terminal)*
+![Acesso Legítimo](./02-acesso-via-waf-sucesso.png)
+
+---
+
+## ⚔️ 3. Testes de Mitigação e Bloqueios
+
+Com o ambiente validado, simulamos ataques reais mapeados no curso de segurança para testar a eficiência defensiva do firewall.
+
+### A. Bloqueio de Local File Inclusion (LFI / Directory Traversal)
+Tentativa de ler arquivos confidenciais do sistema operacional. O WAF intercepta a assinatura maliciosa e responde com código de bloqueio severo:
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
-![Bloqueio LFI](./03-ataque-lfi-bloqueado.jpeg)
-*Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
+![Mitigação LFI](./03-ataque-lfi-bloqueado.png)
+*Resultado: **HTTP/1.1 403 Forbidden***
 
-### 3. Mitigação de SQL Injection (SQLi)
-Simulação de bypass de autenticação injetando a assinatura clássica de SQLi (`' OR 1=1 --`). O tráfego foi analisado por comportamento e barrado na borda.
+### B. Bloqueio de SQL Injection (SQLi)
+Tentativa de burlar a autenticação de login injetando operadores lógicos. O tráfego é mitigado na borda antes de alcançar o banco de dados:
 ```bash
 curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutillidae/index.php"
 ```
-![Bloqueio SQLi](./04-ataque-sqli-bloqueado.png)
-*Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
+![Mitigação SQLi](./04-ataque-sqli-bloqueado.png)
+*Resultado: **HTTP/1.1 403 Forbidden***
 
 ---
 
-## 📊 Análise Forense e Auditoria de Logs
-Abaixo está o registro bruto gerado pelo motor de inspeção da OWASP, evidenciando a detecção exata do ataque, as regras violadas (Rule IDs) e a ação de bloqueio tomada pelo sistema.
-![Auditoria de Logs](./05-logs-detalhados-owasp.png)
+## 📊 4. Análise Forense de Logs
 
----
+Por fim, inspecionamos os logs internos do console para auditar o comportamento do ModSecurity e identificar as assinaturas de regras (Rule IDs) que dispararam os bloqueios anteriores:
 
-## 🚀 Como Replicar este Ambiente
-
-1. Certifique-se de ter o Docker/Podman instalado no seu ambiente de testes.
-2. Inicie o WAF apontando para o IP do seu servidor alvo:
 ```bash
-sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://<IP_DO_SEU_ALVO> -e PARANOIA=1 docker.io/owasp/modsecurity-crs:nginx
+sudo podman logs --tail 20 meu-waf
 ```
+![Auditoria Forense](./05-logs-detalhados-owasp.png)
