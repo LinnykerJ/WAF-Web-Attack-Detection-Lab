@@ -57,7 +57,7 @@ curl -I "http://localhost:8080/mutillidae/index.php"
 Com o ambiente validado, foram realizados testes controlados de ataques web para avaliar a capacidade de detecção e mitigação do WAF.
 
 ### A. Detecção de Local File Inclusion (LFI / Directory Traversal)
-Ao injetar um payload que simula a tentativa de leitura de arquivos confidenciais do sistema operacional, o WAF intercepta a assinatura maliciosa e corta a conexão com um código de bloqueio severo:
+Ao injetar um payload que simula a tentativa de leitura de arquivos confidenciais do sistema operacional, o WAF intercepta a assinatura maliciosa e corta a conexão com um código de bloqueio:
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
