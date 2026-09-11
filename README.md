@@ -88,7 +88,7 @@ Ao realizar o teste de requisição maliciosa utilizando o utilitário `curl`, o
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?hack=true"
 ```
-![Regra Customizada Dedicada](./images/04.5-regra-customizada.jpeg)
+![Regra Customizada Dedicada](./images/06-regra-customizada.jpeg)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden** disparada por política interna.*
 
 ### C. Detecção de SQL Injection (SQLi)
