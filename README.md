@@ -10,7 +10,7 @@ O ambiente utiliza o **Nginx com ModSecurity v3** integrado ao **OWASP Core Rule
 
 O WAF foi implementado via contêiner e configurado para interceptar, inspecionar e filtrar todo o tráfego direcionado à aplicação web antes que as requisições cheguem ao servidor final.
 
-![Subindo a Infraestrutura](./01-subindo-container-waf.png)
+![Subindo a Infraestrutura](./01-subindo-container-waf.jpg)
 *Figura 1: Orquestração e deploy do contêiner do WAF utilizando gerenciamento isolado.*
 
 ---
