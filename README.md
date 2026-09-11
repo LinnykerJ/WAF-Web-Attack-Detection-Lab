@@ -56,3 +56,17 @@ Por fim, inspecionamos os logs internos do console para auditar o comportamento 
 sudo podman logs --tail 20 meu-waf
 ```
 ![Auditoria Forense](./images/05-logs-detalhados-owasp.jpeg)
+
+---
+
+## 🎯 5. Conclusão
+
+A execução deste laboratório prático demonstra a importância de uma abordagem de **Defesa em Profundidade (Defense-in-Depth)** na segurança de aplicações web modernas. Enquanto o desenvolvimento de código seguro deve ser sempre o objetivo principal, a implementação de um **WAF (Web Application Firewall)** robusto, como o ModSecurity com o OWASP CRS, atua como uma barreira crítica na borda contra o tráfego malicioso automatizado e explorações ativas.
+
+Com este projeto, foi possível validar e documentar a linha completa de segurança defensiva:
+* **Orquestração segura** de infraestrutura via contêineres isolados.
+* **Inspeção comportamental** e mitigação imediata de payloads ofensivos em tempo real (HTTP 403).
+* **Análise forense e auditoria de logs brutos** para identificação de ameaças e tomada de decisões técnicas (Blue Team).
+
+⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia de um único clique."*
+
