@@ -11,7 +11,7 @@ O ambiente foi orquestrado via contêiner para atuar na borda da aplicação. O 
 ```bash
 sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://10.0.2.3 -e PARANOIA=1 docker.io/owasp/modsecurity-crs:nginx
 ```
-![Código de Sucesso e Deploy](./01-subindo-container-waf.png)
+![Código de Sucesso e Deploy](./01-subindo-container-waf.jpeg)
 
 ---
 
@@ -23,7 +23,7 @@ Antes dos testes de intrusão, validamos se o WAF permite o tráfego comum de us
 curl -I "http://localhost:8080/mutillidae/index.php"
 ```
 *(Aqui você pode colocar o print do navegador abrindo o painel ou o retorno 200 OK do terminal)*
-![Acesso Legítimo](./02-acesso-via-waf-sucesso.png)
+![Acesso Legítimo](./02-acesso-via-waf-sucesso.jpeg)
 
 ---
 
@@ -36,7 +36,7 @@ Tentativa de ler arquivos confidenciais do sistema operacional. O WAF intercepta
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
-![Mitigação LFI](./03-ataque-lfi-bloqueado.png)
+![Mitigação LFI](./03-ataque-lfi-bloqueado.jpeg)
 *Resultado: **HTTP/1.1 403 Forbidden***
 
 ### B. Bloqueio de SQL Injection (SQLi)
@@ -44,7 +44,7 @@ Tentativa de burlar a autenticação de login injetando operadores lógicos. O t
 ```bash
 curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutillidae/index.php"
 ```
-![Mitigação SQLi](./04-ataque-sqli-bloqueado.png)
+![Mitigação SQLi](./04-ataque-sqli-bloqueado.jpeg)
 *Resultado: **HTTP/1.1 403 Forbidden***
 
 ---
@@ -56,4 +56,4 @@ Por fim, inspecionamos os logs internos do console para auditar o comportamento 
 ```bash
 sudo podman logs --tail 20 meu-waf
 ```
-![Auditoria Forense](./05-logs-detalhados-owasp.png)
+![Auditoria Forense](./05-logs-detalhados-owasp.jpeg)
