@@ -19,7 +19,7 @@ O WAF foi implementado via contêiner e configurado para interceptar, inspeciona
 
 ### 1. Tráfego Legítimo (Acesso Normal)
 A requisição padrão ao ecossistema através do proxy reverso funciona perfeitamente, provando que o WAF opera de forma transparente para usuários comuns.
-![Acesso Legítimo](./02-acesso-via-waf-sucesso.jgp)
+![Acesso Legítimo](./02-acesso-via-waf-sucesso.jpeg)
 
 ### 2. Mitigação de Directory Traversal (LFI)
 Ao tentar injetar um payload para ler arquivos confidenciais do sistema operacional (`../../../../etc/passwd`), o WAF intercepta o ataque e corta a conexão imediatamente com um código de bloqueio.
