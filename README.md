@@ -1,6 +1,6 @@
 # 🛡️ Web Application Firewall (WAF) Lab - ModSecurity & OWASP CRS
 
-Este repositório documenta a implementação de um **Web Application Firewall (WAF)** baseado em **Nginx** e **ModSecurity v3 (OWASP Core Rule Set)**, atuando como um Proxy Reverso defensivo para mitigar ataques do OWASP Top 10.
+Este repositório documenta a implementação de um **Web Application Firewall (WAF)** baseado em **Nginx** e **ModSecurity v3 (OWASP Core Rule Set)**, atuando como um Proxy Reverso defensivo para mitigar ataques do OWASP.
 
 ---
 
