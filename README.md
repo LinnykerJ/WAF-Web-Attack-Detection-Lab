@@ -1,6 +1,6 @@
 # 🛡️ Web Application Firewall (WAF) Lab - ModSecurity & OWASP CRS
 
-Este projeto apresenta um laboratório prático de **Segurança Defensiva (Blue Team)**, focado na implementação, validação e monitoramento de um **Web Application Firewall (WAF)** para mitigar vulnerabilidades críticas descritas no **OWASP Top 10**.
+Este projeto apresenta um laboratório prático de **Segurança Defensiva (Blue Team)**, focado na implementação, validação e monitoramento de um **Web Application Firewall (WAF)** para mitigar vulnerabilidades críticas descritas no **OWASP**.
 
 O ambiente utiliza o **Nginx com ModSecurity v3** integrado ao **OWASP Core Rule Set (CRS)**, atuando como um Proxy Reverso de segurança à frente de um servidor web vulnerável (OWASP BWA).
 
