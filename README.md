@@ -30,9 +30,19 @@ A abordagem seguiu três etapas principais:
 
 ---
 
-## 🚀 1. Inicialização da Infraestrutura
+## ⚙️ 1. Arquitetura e Parâmetros de Configuração
 
-O ambiente foi orquestrado via contêiner para atuar na borda da aplicação. O console abaixo demonstra a execução do deploy, finalizando com o ID do contêiner ativo:
+A inteligência e o comportamento de bloqueio do WAF foram definidos diretamente na inicialização do contêiner através do ajuste de variáveis de ambiente críticas para o hardening do Nginx e ModSecurity:
+
+* **`PORT 8080:80` (Mapeamento de Borda):** Configura o contêiner para interceptar o tráfego externo na porta `8080`, atuando como a única porta de entrada para a aplicação.
+* **`PROXY_URL / BACKEND` (Direcionamento de Proxy Reverso):** Vincula o WAF diretamente ao IP interno do servidor de aplicação (`http://10.0.2.3`), garantindo que o cliente final nunca converse diretamente com o servidor web real.
+* **`PARANOIA=1` (Nível de Paranoia do CRS):** Define o nível de rigor das expressões regulares do OWASP Core Rule Set. O nível `1` é o padrão recomendado para produção, mitigando ataques reais do OWASP Top 10 com o menor índice possível de falsos positivos (ideal para garantir a disponibilidade do negócio).
+
+---
+
+## 🚀 2. Inicialização da Infraestrutura
+
+O ambiente foi orquestrado via contêiner aplicando os parâmetros descritos na arquitetura. O console abaixo demonstra a execução do deploy, finalizando com o ID do contêiner ativo e estável:
 
 ```bash
 sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://10.0.2.3 -e PARANOIA=1 docker.io/owasp/modsecurity-crs:nginx
@@ -41,7 +51,7 @@ sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://10.0.2.3 -e PARAN
 
 ---
 
-## 🌐 2. Validação de Tráfego Legítimo (Acesso Normal)
+## 🌐 3. Validação de Tráfego Legítimo (Acesso Normal)
 
 Antes dos testes de segurança, validamos se o WAF permite o tráfego comum de usuários sem gerar falsos positivos. A requisição retorna o status padrão de sucesso (`200 OK`):
 
@@ -52,7 +62,7 @@ curl -I "http://localhost:8080/mutillidae/index.php"
 
 ---
 
-## ⚔️ 3. Testes Controlados de Mitigação e Bloqueios
+## ⚔️ 4. Testes Controlados de Mitigação e Bloqueios
 
 Com o ambiente validado, foram realizados testes controlados de ataques web para avaliar a capacidade de detecção e mitigação do WAF.
 
@@ -74,7 +84,7 @@ curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutill
 
 ---
 
-## 📊 4. Análise e Auditoria de Eventos de Segurança
+## 📊 5. Análise e Auditoria de Eventos de Segurança
 
 Por fim, inspecionamos os logs internos do console para auditar o comportamento do ModSecurity e mapear os gatilhos brutos (Rule IDs) que dispararam os bloqueios anteriores:
 
@@ -85,7 +95,7 @@ sudo podman logs --tail 20 meu-waf
 
 ---
 
-## 📈 5. Results Obtidos
+## 📈 6. Resultados Obtidos
 
 | Cenário Analisado | Comportamento Esperado | Resultado no Console | Status |
 | :--- | :--- | :--- | :---: |
@@ -95,13 +105,13 @@ sudo podman logs --tail 20 meu-waf
 
 ---
 
-## 🎯 6. Conclusão
+## 🎯 7. Conclusão
 
 A execução deste laboratório prático permitiu analisar a aplicação de uma abordagem de Defesa em Profundidade (Defense-in-Depth) na proteção de aplicações web. Embora o desenvolvimento seguro seja fundamental para a redução de vulnerabilidades, a utilização de um Web Application Firewall (WAF) fornece uma camada adicional de proteção capaz de identificar e mitigar requisições que apresentam características associadas a ataques web.
 
 Durante os testes, foram avaliados cenários de Local File Inclusion (LFI/Directory Traversal) e SQL Injection (SQLi), observando-se o comportamento do WAF diante de requisições legítimas e maliciosas. Os eventos gerados pelo ModSecurity também foram analisados por meio dos logs, permitindo identificar as regras responsáveis pela detecção e pelo bloqueio das requisições.
 
-Com o desenvolvimento do laboratório, foi possível aplicar conceitos relacionados à segurança de aplicações web, OWASP, WAF, análise de requisições HTTP e monitoramento de eventos de segurança, consolidando conhecimentos teóricos por meio de uma implementação prática em ambiente controlado.
+Com o desenvolvimento do laboratório, foi possível aplicar conceitos relacionados à segurança de aplicações web, OWASP, WAF, analysis de requisições HTTP e monitoramento de eventos de segurança, consolidando conhecimentos teóricos por meio de uma implementação prática em ambiente controlado.
 
 ---
 
