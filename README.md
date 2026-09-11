@@ -48,7 +48,7 @@ O ambiente foi orquestrado via contêiner aplicando os parâmetros descritos na 
 ```bash
 sudo podman run -d --name meu-waf -p 8080:80 -e BACKEND=http://10.0.2.3 -e PARANOIA=1 docker.io/owasp/modsecurity-crs:nginx
 ```
-![Código de Sucesso e Deploy](./images/01-subindo-container-waf.jpeg)
+![Código de Sucesso e Deploy](./images/01-subindo-container-waf.png)
 
 ---
 
@@ -59,7 +59,7 @@ Antes dos testes de segurança, validamos se o WAF permite o tráfego comum de u
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php"
 ```
-![Acesso Legítimo](./images/02-acesso-via-waf-sucesso.jpeg)
+![Acesso Legítimo](./images/02-acesso-via-waf-sucesso.png)
 
 ---
 
@@ -72,7 +72,7 @@ Ao injetar um payload que simula a tentativa de leitura de arquivos confidenciai
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
-![Mitigação LFI](./images/03-ataque-lfi-bloqueado.jpeg)
+![Mitigação LFI](./images/03-ataque-lfi-bloqueado.png)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ### B. Implementação de Regra Customizada (Tuning Autoral)
@@ -88,7 +88,7 @@ Ao realizar o teste de requisição maliciosa utilizando o utilitário `curl`, o
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?hack=true"
 ```
-![Regra Customizada Dedicada](./images/06-regra-customizada.jpeg)
+![Regra Customizada Dedicada](./images/06-regra-customizada.png)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden** disparada por política interna.*
 
 ### C. Detecção de SQL Injection (SQLi)
@@ -96,7 +96,7 @@ Simulação de bypass de autenticação injetando operadores lógicos no parâme
 ```bash
 curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutillidae/index.php"
 ```
-![Mitigação SQLi](./images/04-ataque-sqli-bloqueado.jpeg)
+![Mitigação SQLi](./images/04-ataque-sqli-bloqueado.png)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ### D. Detecção de Cross-Site Scripting (XSS)
@@ -104,7 +104,7 @@ Simulação de injeção de script malicioso voltado ao cliente final utilizando
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=<script>alert(1)</script>"
 ```
-![Mitigação XSS](./images/07-ataque-xss-bloqueado.jpeg)
+![Mitigação XSS](./images/07-ataque-xss-bloqueado.png)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ---
@@ -116,7 +116,7 @@ Por fim, inspecionamos os logs internos do console para auditar o comportamento 
 ```bash
 sudo podman logs --tail 20 meu-waf
 ```
-![Auditoria Forense](./images/05-logs-detalhados-owasp.jpeg)
+![Auditoria Forense](./images/05-logs-detalhados-owasp.png)
 
 ---
 
