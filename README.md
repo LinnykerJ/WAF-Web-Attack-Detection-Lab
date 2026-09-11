@@ -68,5 +68,7 @@ Com este projeto, foi possível validar e documentar a linha completa de seguran
 * **Inspeção comportamental** e mitigação imediata de payloads ofensivos em tempo real (HTTP 403).
 * **Análise forense e auditoria de logs brutos** para identificação de ameaças e tomada de decisões técnicas (Blue Team).
 
+---
+
 ⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia de um único clique."*
 
