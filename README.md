@@ -26,7 +26,7 @@ Ao tentar injetar um payload para ler arquivos confidenciais do sistema operacio
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
-![Bloqueio LFI](./03-ataque-lfi-bloqueado.png)
+![Bloqueio LFI](./03-ataque-lfi-bloqueado.jpeg)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ### 3. Mitigação de SQL Injection (SQLi)
