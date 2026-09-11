@@ -31,7 +31,7 @@ curl -I "http://localhost:8080/mutillidae/index.php"
 Com o ambiente validado, simulamos ataques reais mapeados no curso de segurança para testar a eficiência defensiva do firewall.
 
 ### A. Bloqueio de Local File Inclusion (LFI / Directory Traversal)
-Tentativa de ler arquivos confidenciais do sistema operacional. O WAF intercepta a assinatura maliciosa e responde com código de bloqueio severo:
+O WAF intercepta a requisição e impede que ela seja encaminhada à aplicação, retornando HTTP 403 Forbidden:
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=../../../../etc/passwd"
 ```
@@ -48,7 +48,7 @@ curl -I -G --data-urlencode "username=' OR 1=1 --" "http://localhost:8080/mutill
 
 ---
 
-## 📊 4. Análise Forense de Logs
+## 📊 4. Análise dos Eventos de Segurança
 
 Por fim, inspecionamos os logs internos do console para auditar o comportamento do ModSecurity e identificar as assinaturas de regras (Rule IDs) que dispararam os bloqueios anteriores:
 
