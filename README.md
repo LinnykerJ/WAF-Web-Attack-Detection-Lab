@@ -25,7 +25,7 @@ O laboratório foi desenvolvido em ambiente controlado e isolado, utilizando con
 
 A abordagem seguiu três etapas principais:
 1. **Validação Inicial:** Homologação do funcionamento da aplicação por meio de requisições legítimas.
-2. **Simulação Controlada:** Execução de testes utilizando diferentes padrões de ataques web com base nas vulnerabilidades descritas no OWASP Top 10.
+2. **Simulação Controlada:** Execução de testes utilizando diferentes padrões de ataques web com base nas vulnerabilidades descritas no OWASP.
 3. **Auditoria de Eventos:** Avaliação dos resultados a partir dos códigos de resposta HTTP e dos eventos registrados pelo ModSecurity, comparando o comportamento esperado para cada cenário.
 
 ---
@@ -36,7 +36,7 @@ A inteligência e o comportamento de bloqueio do WAF foram definidos diretamente
 
 * **`PORT 8080:80` (Mapeamento de Borda):** Configura o contêiner para interceptar o tráfego externo na porta `8080`, atuando como a única porta de entrada para a aplicação.
 * **`PROXY_URL / BACKEND` (Direcionamento de Proxy Reverso):** Vincula o WAF diretamente ao IP interno do servidor de aplicação (`http://10.0.2.3`), garantindo que o cliente final nunca converse diretamente com o servidor web real.
-* **`PARANOIA=1` (Nível de Paranoia do CRS):** Define o nível de rigor das expressões regulares do OWASP Core Rule Set. O nível `1` é o padrão recomendado para produção, mitigando ataques reais do OWASP Top 10 com o menor índice possível de falsos positivos (ideal para garantir a disponibilidade do negócio).
+* **`PARANOIA=1` (Nível de Paranoia do CRS):** Define o nível de rigor das expressões regulares do OWASP Core Rule Set. O nível `1` é o padrão recomendado para produção, mitigando ataques reais do OWASP com o menor índice possível de falsos positivos (ideal para garantir a disponibilidade do negócio).
 
 ---
 
