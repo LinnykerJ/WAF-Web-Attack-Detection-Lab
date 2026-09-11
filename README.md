@@ -39,13 +39,6 @@ A inteligência e o comportamento de bloqueio do WAF foram definidos diretamente
 * **`PROXY_URL / BACKEND` (Direcionamento de Proxy Reverso):** Vincula o WAF diretamente ao IP interno do servidor de aplicação (`http://10.0.2.3`), garantindo que o cliente final nunca converse diretamente com o servidor web real.
 * **`PARANOIA=1` (Nível de Paranoia do CRS):** Define o nível de rigor das expressões regulares do OWASP Core Rule Set. O nível `1` é o padrão recomendado para produção, mitigando ataques reais com o menor índice possível de falsos positivos.
 
-Abaixo é possível auditar a estrutura interna do arquivo de configuração padrão do Nginx gerenciando as diretivas de servidor e os mapeamentos de proxy:
-
-```bash
-sudo podman exec meu-waf cat /etc/nginx/conf.d/default.conf
-```
-![Configuração Interna do Nginx](./images/01-configuracao-nginx.jpeg)
-
 ---
 
 ## 🚀 2. Inicialização da Infraestrutura
