@@ -133,4 +133,4 @@ Com o desenvolvimento do laboratório, foi possível aplicar conceitos relaciona
 
 ---
 
-> ⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia de um único clique."*
+> ⚡ *"Onde o código encontra o comportamento humano, a engenharia mais complexa de segurança ainda se resolve na psicologia_de_um_unico_clique."*
