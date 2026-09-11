@@ -104,7 +104,7 @@ Simulação de injeção de script malicioso voltado ao cliente final utilizando
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php?page=<script>alert(1)</script>"
 ```
-![Mitigação XSS](./images/04.7-ataque-xss-bloqueado.jpeg)
+![Mitigação XSS](./images/07-ataque-xss-bloqueado.jpeg)
 *Resultado: Resposta imediata de **HTTP/1.1 403 Forbidden**.*
 
 ---
