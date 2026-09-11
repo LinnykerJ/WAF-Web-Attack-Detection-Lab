@@ -22,7 +22,6 @@ Antes dos testes de intrusão, validamos se o WAF permite o tráfego comum de us
 ```bash
 curl -I "http://localhost:8080/mutillidae/index.php"
 ```
-*(Aqui você pode colocar o print do navegador abrindo o painel ou o retorno 200 OK do terminal)*
 ![Acesso Legítimo](./images/02-acesso-via-waf-sucesso.jpeg)
 
 ---
